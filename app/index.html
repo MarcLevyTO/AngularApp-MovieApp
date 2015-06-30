@@ -1,15 +1,35 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp">
-<head>
-  <title>Shomi App</title>
-  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
-  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
-  <link rel="stylesheet" href="app.css">
-  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
-</head>
-<body ng-controller="PlayerController">
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-route/angular-route.js"></script>
-  <script src="app.js"></script>
-</body>
+  <head>
+    <title>Shomi App</title>
+    <link rel="stylesheet" href="../bower_components/html5-boilerplate/dist/css/normalize.css">
+    <link rel="stylesheet" href="../bower_components/html5-boilerplate/dist/css/main.css">
+    <link rel="stylesheet" href="app.css">
+    <script src="../bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+  </head>
+  <body>
+    <div ng-controller="myController">
+      <div ng-show="movies.length > 0">
+        <div ng-repeat="movie in movies | startFrom:currentPage*pageSize | limitTo:pageSize ">
+          <!-- Clean below up to have filter and only show image with image type = 1 -->
+          <div ng-repeat="image in movie.Item.Images">
+            <div ng-show="image.Type==1">
+              <img ng-src="{{image.ImageId}}" width="200">
+            </div>
+          </div>
+        </div>
+      </div>
+      <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+        Previous
+      </button>
+      {{currentPage+1}}/{{numberOfPages()}}
+      <button ng-disabled="currentPage >= data.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+        Next
+      </button>
+    </div>
+
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/angular-route/angular-route.js"></script>
+    <script src="app.js"></script>
+  </body>
 </html>
