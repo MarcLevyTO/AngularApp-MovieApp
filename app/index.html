@@ -25,11 +25,14 @@
           <button ng-disabled="currentPage >= data.length/pageSize - 1" ng-click="currentPage=currentPage+1">
             Next
           </button>
-          <select class="form-control" ng-model="sortBy">
-            <option value="Title">Title</option>
-            <option value="RunTimeSec">Duration</option>
-            <option value="ReleaseYear">Release Year</option>
-        </select>
+          <div>
+            <label> Sort by </label>
+            <select class="form-control" ng-model="sortBy">
+              <option selected='selected' value="Title">Title</option>
+              <option value="RunTimeSec">Duration</option>
+              <option value="ReleaseYear">Release Year</option>
+            </select>
+          </div>
         </div>
       </div>
     <div>

@@ -5,6 +5,7 @@ app.controller('myController', ['$scope', '$http', function($scope, $http) {
   $scope.currentPage = 0;
   $scope.pageSize = 20;
   $scope.movies = [];
+  $scope.sortBy = 'Title';
   $scope.numPages = function(){
     return Math.ceil($scope.movies.length/$scope.pageSize);
   }
