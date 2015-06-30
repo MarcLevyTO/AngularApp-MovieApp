@@ -1,30 +1,36 @@
-/* app css stylesheet */
-
-.menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
+.mainBody {
+  background-color: #036;
 }
 
-.menu:before {
-  content: "[";
+.movieGrid {
+  background-color: #036;
+  max-width: 1500px;
 }
 
-.menu:after {
-  content: "]";
-}
-
-.menu > li {
-  display: inline;
-}
-
-.menu > li:before {
-  content: "|";
-  padding-right: 0.3em;
-}
-
-.menu > li:nth-child(1):before {
-  content: "";
+.movieGrid ul {
+  margin: 0;
   padding: 0;
+  list-style-type: none;
+}
+
+.movieGrid ul li {
+  display: block;
+  float: left;
+}
+
+.movieGrid ul li img {
+  text-decoration: none;
+  padding: 2em;
+  color: #fff;
+  max-height: 300px;
+  background-color: #036;
+}
+
+.movieGrid ul li img:hover {
+  color: #fff;
+  background-color: #369;
+}
+
+.movieGrid .movieButtons {
+
 }
