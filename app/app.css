@@ -1,10 +1,17 @@
+body {
+    background-color: #036;
+}
+
 .mainBody {
-  background-color: #036;
+  float:left;
+  margin: 0 auto;
 }
 
 .movieGrid {
   background-color: #036;
   max-width: 1500px;
+  float:left;
+
 }
 
 .movieGrid ul {
@@ -31,6 +38,6 @@
   background-color: #369;
 }
 
-.movieGrid .movieButtons {
+.movieButtons {
 
 }
