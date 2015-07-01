@@ -28,15 +28,18 @@
   }
 }
 
-
-
 body {
     background-color: #036;
 }
 
+.movieSelector {
+  margin-bottom: 10px;
+  width: 95%;
+}
+
 .movieGrid {
   float:left;
-  width: 1150px;
+  margin-bottom: 10px;
 }
 
 .item {
@@ -49,43 +52,7 @@ body {
   max-width: 200px;
 }
 
-/*.mainBody {
-  float:left;
-  margin: 0 auto;
-}
-
-
-
-.movieGrid ul {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-}
-
-.movieGrid ul li {
-  display: block;
-  float: left;
-}
-
-.imageViewer :hover {
-  color: #fff;
-  background-color: #369;
-}*/
-
 .moviePoster {
   text-decoration: none;
   height: 275px;
 }
-
-/*.imageViewer {
-  max-height: 600px;
-}
-
-.movieScreen {
-  max-width: 800px;
-}
-
-
-.movieButtons {
-
-}*/
