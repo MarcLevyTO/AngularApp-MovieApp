@@ -23,9 +23,9 @@
         </div>
         <div ng-show="movies.length > 0">
           <div ng-repeat="movie in movies | orderBy:sortBy | startFrom:currentPage*pageSize | limitTo:pageSize " class="col-md-1-5">
-            <div class="item" the-directive position="{{ $index + 1 }}" last="{{ $last }}">
-              <img class="moviePoster" ng-src="{{movie.mainImage}}">
-            </div>
+            <image-viewer
+              movie="movie">
+            </image-viewer>
           </div>
         </div>
         <div class="PageSelector">

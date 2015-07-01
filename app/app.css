@@ -35,8 +35,18 @@ body {
 }
 
 .movieGrid {
-  max-width: 1200px;
   float:left;
+  width: 1150px;
+}
+
+.item {
+  max-width: 200px;
+  height: 290px;
+  background-color: #654;
+}
+
+.movieScreen {
+  max-width: 200px;
 }
 
 /*.mainBody {
@@ -79,39 +89,3 @@ body {
 .movieButtons {
 
 }*/
-
-.item
-{
-  height: 320px;
-  margin: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.twelve
-{
-  height: 320px;
-  margin: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.item
-{
-  background-color: #F92672;
-}
-
-.twelve
-{
-  background-color: #272822;
-}
-
-.clicked
-{
-  border: 3px solid black;
-}
-
-.calculated
-{
-  background-color: #A6E22E;
-}

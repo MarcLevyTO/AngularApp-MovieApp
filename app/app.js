@@ -26,42 +26,40 @@ app.controller('myController', ['$scope', '$http', function($scope, $http) {
 
   // Load data from feed json file
   $http.get('assets/feed.json')
-       .then(function(res){
+    .then(function(res){
 
-          //Data Transforms
-          for (i = 0; i < res.data.Data.length; i++) {
-            var datum = res.data.Data[i];
+      //Data Transforms
+      for (i = 0; i < res.data.Data.length; i++) {
+        var datum = res.data.Data[i];
 
-            // Move Title, ReleaseYear, and Duration up one level
-            datum.Title = datum.Item.Title;
-            datum.ReleaseYear = datum.Item.ReleaseYear;
-            datum.RunTimeSec = datum.Item.RunTimeSec;
-            if (typeof datum.RunTimeSec != 'undefined') {
-              datum.RunTimeString = datum.RunTimeSec.toString().toHHMM();
+        // Move Title, ReleaseYear, and Duration up one level
+        datum.Title = datum.Item.Title;
+        datum.ReleaseYear = datum.Item.ReleaseYear;
+        datum.RunTimeSec = datum.Item.RunTimeSec;
+        if (typeof datum.RunTimeSec != 'undefined') {
+          datum.RunTimeString = datum.RunTimeSec.toString().toHHMM();
+        }
+
+        //Extract out the main image from the other ones
+        var images = datum.Item.Images;
+        for(j = 0; j < images.length; j++) {
+          if (images[j].Type == 1) {
+            datum.mainImage = images[j].ImageId;
+          }
+          if (images[j].Type == 2) {
+            if (images[j].ImageId.includes('http')) {
+              datum.secondaryImage = images[j].ImageId;
             }
-
-            //Extract out the main image from the other ones
-            var images = datum.Item.Images;
-            for(j = 0; j < images.length; j++) {
-              if (images[j].Type == 1) {
-                datum.mainImage = images[j].ImageId;
-              }
-              if (images[j].Type == 2) {
-                if (images[j].ImageId.includes('http')) {
-                  datum.secondaryImage = images[j].ImageId;
-                }
-                else
-                {
-                  datum.secondaryImage = 'assets/Shomi_logo.jpg'
-                }
-              }
+            else
+            {
+              datum.secondaryImage = 'assets/Shomi_logo.jpg'
             }
           }
-
-          // Add movies to scope
-          $scope.movies = res.data.Data;
-        });
-
+        }
+      }
+      // Add movies to scope
+      $scope.movies = res.data.Data;
+    });
 }]);
 
 // Define a filter for pagination
@@ -75,57 +73,22 @@ app.filter('startFrom', function() {
 // Define a image viewer directive
 app.directive('imageViewer', function(){
   var imageViewerCtrl = function($scope) {
-    $scope.toggleImage = function(){
-      $scope.isInImage = !$scope.isInImage;
-    };
+    $scope.showMovieDetails = function(){
+      if(!$scope.isInImage) {
+        $scope.isInImage = true;
+      }
+    }
+    $scope.showMoviePoster = function(){
+      if($scope.isInImage) {
+        $scope.isInImage = false;
+      }
+    }
   };
   imageViewerCtrl.$inject = ['$scope'];
-
   var directive = {};
   directive.restrict = 'E';
   directive.scope = { movie: '=' };
   directive.templateUrl = '/app/templates/image_viewer.html';
   directive.controller = imageViewerCtrl;
-
   return directive;
 });
-
-app.directive('theDirective', function() {
-
-  return {
-    restrict: 'A',
-    scope: { position: '@', last: '@', movie: '=' },
-    link: function(scope, element, attrs) {
-
-      element.bind('click', function() {
-
-        // Highlight clicked element
-        angular.element(document.querySelector('.clicked')).removeClass('clicked');
-        element.addClass('clicked');
-
-        // Create the collapse element or select existing one
-        var collapseQuery = document.querySelector('#collapse');
-        var collapse = collapseQuery === null ?
-          angular.element('<div id="collapse" class="col-xs-12"><div class="twelve">{{scope.movie.Title}}</div></div>') :
-          angular.element(collapseQuery);
-
-        // Based on the position of the clicked element calculate the rounded number up to the nearest multiple of four
-        var calculatedPosition = Math.ceil(scope.position / 5) * 5;
-
-        // Get the element at the calculated position or the last one
-        var calculatedQuery = document.querySelector('[position="' + calculatedPosition + '"]');
-        if (calculatedQuery === null) calculatedQuery = document.querySelector('[last="true"]');;
-
-        var calculatedElement = angular.element(calculatedQuery);
-
-        // Insert the collapse element after the element at the calculated position
-        calculatedElement.parent().after(collapse);
-      });
-
-      scope.$on('$destroy', function() {
-        element.unbind('click');
-      });
-    }
-  };
-});
-
