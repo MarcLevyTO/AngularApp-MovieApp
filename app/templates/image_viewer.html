@@ -1,12 +1,11 @@
 <div class="item" ng-mouseenter='showMovieDetails()' ng-mouseleave="showMoviePoster()">
-
   <img class="moviePoster" ng-src="{{movie.mainImage}}" ng-hide="isInImage">
-
-  <div ng-hide="!isInImage">
-    <p>{{movie.Title}}</p>
-    <p>{{movie.ReleaseYear}}</p>
-    <p>{{movie.RunTimeString}}</p>
-    <img class="movieScreen" ng-src="{{movie.secondaryImage}}">
+  <div class="movieInfo" ng-hide="!isInImage">
+    <div class="movieDetails">
+      <h4>{{movie.Title}}</h4>
+      <p>{{movie.ReleaseYear}}</p>
+      <p>{{movie.RunTimeString}}</p>
+      <img class="movieScreen" ng-src="{{movie.secondaryImage}}">
+    </div>
   </div>
-
 </div>
