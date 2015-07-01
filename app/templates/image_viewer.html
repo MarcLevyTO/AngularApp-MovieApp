@@ -1,3 +1,13 @@
-<img  ng-mouseenter="hover = true"
-      ng-mouseleave="hover = false"
-      ng-src="{{movieImage}}">
+<div class="imageViewer"
+      ng-click="toggleImage()">
+
+  <img class="moviePoster" ng-src="{{movie.mainImage}}" ng-hide="isInImage">
+
+  <div ng-hide="!isInImage">
+    <p>{{movie.Title}}</p>
+    <p>{{movie.ReleaseYear}}</p>
+    <p>{{movie.RunTimeSec}}</p>
+    <img class="movieScreen" ng-src="{{movie.secondaryImage}}">
+  </div>
+
+</div>

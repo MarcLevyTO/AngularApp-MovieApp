@@ -4,40 +4,40 @@
     <title>Shomi App</title>
     <link rel="stylesheet" href="../bower_components/html5-boilerplate/dist/css/normalize.css">
     <link rel="stylesheet" href="../bower_components/html5-boilerplate/dist/css/main.css">
+    <link data-require="bootstrap-css@*" data-semver="3.1.1" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="app.css">
     <script src="../bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
   </head>
 
   <body>
     <div class="mainBody" ng-controller="myController">
-      <div class="movieSelector">
-        <label> Sort by </label>
-        <select class="form-control" ng-model="sortBy">
-          <option value="Title">A-Z</option>
-          <option value="RunTimeSec">Duration</option>
-          <option value="ReleaseYear">Year</option>
-        </select>
-      </div>
+
       <div class="movieGrid" >
-        <ul ng-show="movies.length > 0">
-          <li ng-repeat="movie in movies | orderBy:sortBy | startFrom:currentPage*pageSize | limitTo:pageSize ">
-            <imageviewer
-              movie-image="movie.mainImage">
-            </imageviewer>
-          </li>
-        </ul>
+        <div class="movieSelector">
+          <label> Sort by </label>
+          <select class="form-control" ng-model="sortBy">
+            <option value="Title">A-Z</option>
+            <option value="RunTimeSec">Duration</option>
+            <option value="ReleaseYear">Year</option>
+          </select>
+        </div>
+        <div ng-show="movies.length > 0">
+          <div ng-repeat="movie in movies | orderBy:sortBy | startFrom:currentPage*pageSize | limitTo:pageSize " class="col-md-1-5">
+            <div class="item" the-directive position="{{ $index + 1 }}" last="{{ $last }}">
+              <img class="moviePoster" ng-src="{{movie.mainImage}}">
+            </div>
+          </div>
+        </div>
+        <div class="PageSelector">
+          <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+              Previous
+            </button>
+            {{currentPage+1}}/{{numberOfPages()}}
+            <button ng-disabled="currentPage >= movies.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+              Next
+            </button>
+        </div>
       </div>
-
-      <div class="PageSelector">
-        <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
-            Previous
-          </button>
-          {{currentPage+1}}/{{numberOfPages()}}
-          <button ng-disabled="currentPage >= movies.length/pageSize - 1" ng-click="currentPage=currentPage+1">
-            Next
-          </button>
-      </div>
-
     <div>
 
     <script src="../bower_components/angular/angular.js"></script>

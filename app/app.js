@@ -1,19 +1,14 @@
-//= require_self
-//= require_tree ./services
-//= require_tree ./directives
-//= require_tree ./resources
+String.prototype.toHHMM = function () {
+    var sec_num = parseInt(this, 10); // don't forget the second param
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    if (minutes < 10) {minutes = "0"+minutes;}
+    var time = hours+'h '+ minutes + 'm';
+    return time;
+}
 
-// Define resources
-angular.module('myApp.resources', []);
-
-// Define services that use the resources
-angular.module('myApp.services', ['myApp.resources']);
-
-// Define directives that use the resources and services
-angular.module('myApp.directives', ['myApp.services', 'myApp.resources']);
-
-// Define the angular application that uses the resources, services, and directives
-var app = angular.module('myApp', ['myApp.resources', 'myApp.services', 'myApp.directives']);
+// Define the angular application
+var app = angular.module('myApp', []);
 
 // Define the controller
 app.controller('myController', ['$scope', '$http', function($scope, $http) {
@@ -41,6 +36,9 @@ app.controller('myController', ['$scope', '$http', function($scope, $http) {
             datum.Title = datum.Item.Title;
             datum.ReleaseYear = datum.Item.ReleaseYear;
             datum.RunTimeSec = datum.Item.RunTimeSec;
+            if (typeof datum.RunTimeSec != 'undefined') {
+              datum.RunTimeString = datum.RunTimeSec.toString().toHHMM();
+            }
 
             //Extract out the main image from the other ones
             var images = datum.Item.Images;
@@ -48,14 +46,25 @@ app.controller('myController', ['$scope', '$http', function($scope, $http) {
               if (images[j].Type == 1) {
                 datum.mainImage = images[j].ImageId;
               }
+              if (images[j].Type == 2) {
+                if (images[j].ImageId.includes('http')) {
+                  datum.secondaryImage = images[j].ImageId;
+                }
+                else
+                {
+                  datum.secondaryImage = 'assets/Shomi_logo.jpg'
+                }
+              }
             }
           }
 
           // Add movies to scope
           $scope.movies = res.data.Data;
         });
+
 }]);
 
+// Define a filter for pagination
 app.filter('startFrom', function() {
   return function(input, start) {
       start = +start;
@@ -64,18 +73,59 @@ app.filter('startFrom', function() {
 });
 
 // Define a image viewer directive
-var imageViewerCtrl = function($scope) {};
-imageViewerCtrl.$inject = ['$scope'];
+app.directive('imageViewer', function(){
+  var imageViewerCtrl = function($scope) {
+    $scope.toggleImage = function(){
+      $scope.isInImage = !$scope.isInImage;
+    };
+  };
+  imageViewerCtrl.$inject = ['$scope'];
 
-var imageViewer = function() {
   var directive = {};
-
   directive.restrict = 'E';
-  directive.scope = { movieImage: '=' };
+  directive.scope = { movie: '=' };
   directive.templateUrl = '/app/templates/image_viewer.html';
   directive.controller = imageViewerCtrl;
 
   return directive;
-};
+});
 
-app.directive('imageviewer', imageViewer);
+app.directive('theDirective', function() {
+
+  return {
+    restrict: 'A',
+    scope: { position: '@', last: '@', movie: '=' },
+    link: function(scope, element, attrs) {
+
+      element.bind('click', function() {
+
+        // Highlight clicked element
+        angular.element(document.querySelector('.clicked')).removeClass('clicked');
+        element.addClass('clicked');
+
+        // Create the collapse element or select existing one
+        var collapseQuery = document.querySelector('#collapse');
+        var collapse = collapseQuery === null ?
+          angular.element('<div id="collapse" class="col-xs-12"><div class="twelve">{{scope.movie.Title}}</div></div>') :
+          angular.element(collapseQuery);
+
+        // Based on the position of the clicked element calculate the rounded number up to the nearest multiple of four
+        var calculatedPosition = Math.ceil(scope.position / 5) * 5;
+
+        // Get the element at the calculated position or the last one
+        var calculatedQuery = document.querySelector('[position="' + calculatedPosition + '"]');
+        if (calculatedQuery === null) calculatedQuery = document.querySelector('[last="true"]');;
+
+        var calculatedElement = angular.element(calculatedQuery);
+
+        // Insert the collapse element after the element at the calculated position
+        calculatedElement.parent().after(collapse);
+      });
+
+      scope.$on('$destroy', function() {
+        element.unbind('click');
+      });
+    }
+  };
+});
+
