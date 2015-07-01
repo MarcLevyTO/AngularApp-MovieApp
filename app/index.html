@@ -10,34 +10,36 @@
   </head>
 
   <body>
-    <div class="mainBody" ng-controller="myController">
+    <div id='wrap'>
+      <div class="mainBody" ng-controller="myController">
 
-      <div class="movieSelector">
-        <select class="form-control" ng-model="sortBy">
-          <option value="Title">A-Z</option>
-          <option value="RunTimeSec">Duration</option>
-          <option value="ReleaseYear">Year</option>
-        </select>
-      </div>
+        <div class="movieSelector">
+          <select class="form-control" ng-model="sortBy">
+            <option value="Title">A-Z</option>
+            <option value="RunTimeSec">Duration</option>
+            <option value="ReleaseYear">Year</option>
+          </select>
+        </div>
 
-      <div class="movieGrid" >
-        <div ng-show="movies.length > 0">
-          <div ng-repeat="movie in movies | orderBy:sortBy | startFrom:currentPage*pageSize | limitTo:pageSize " class="col-md-1-5">
-            <image-viewer
-              movie="movie">
-            </image-viewer>
+        <div class="movieGrid" >
+          <div ng-show="movies.length > 0">
+            <div ng-repeat="movie in movies | orderBy:sortBy | startFrom:currentPage*pageSize | limitTo:pageSize " class="col-md-1-5">
+              <image-viewer
+                movie="movie">
+              </image-viewer>
+            </div>
           </div>
         </div>
-      </div>
 
-      <nav>
-        <ul class="pager">
-          <li ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1"><a href="#">Previous</a></li>
-          <li ng-disabled="currentPage >= movies.length/pageSize - 1" ng-click="currentPage=currentPage+1"><a href="#">Next</a></li>
-        </ul>
-      </nav>
+        <nav>
+          <ul class="pager">
+            <li ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1"><a href="#">Previous</a></li>
+            <li ng-disabled="currentPage >= movies.length/pageSize - 1" ng-click="currentPage=currentPage+1"><a href="#">Next</a></li>
+          </ul>
+        </nav>
 
-    <div>
+      <div>
+    </div>
 
     <script src="../bower_components/angular/angular.js"></script>
     <script src="../bower_components/angular-route/angular-route.js"></script>
